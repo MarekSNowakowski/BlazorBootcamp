@@ -1,0 +1,102 @@
+﻿@page "/learnBlazor/lifecycle"
+@using System.Threading
+
+<h3>LifeCycle</h3>
+
+<p role="status">Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<br/>
+
+@Count <button @onclick=StartCountDown> Start Countdown </button>
+
+
+<div class="border">
+    <_LifeCycleChild CountValue="@currentCount"></_LifeCycleChild>
+</div>
+
+<hr/>
+@foreach(var item in EventType)
+{
+    @item 
+    <hr/>
+}
+
+@code {
+    private int currentCount = 0;
+    List<string> EventType = new List<string>();
+
+    private int Count { get; set; } = 5;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+
+    protected override void OnInitialized()
+    {
+        EventType.Add("On Initliazed was called");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        EventType.Add("On Initliazed async was called");
+        await Task.Delay(1000);
+    }
+
+    protected override void OnParametersSet()
+    {
+        EventType.Add("On ParametersSet was called");
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        EventType.Add("On ParametersSet async was called");
+        await Task.Delay(1000);
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            EventType.Add("On AfterRender was called for the first time");
+        }
+        else
+        {
+            EventType.Add("On AfterRender was called");
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            EventType.Add("On AfterRender async was called for the first time");
+        }
+        else
+        {
+            EventType.Add("On AfterRender async was called");
+            await Task.Delay(1000);
+        }
+    }
+
+    protected override bool ShouldRender()
+    {
+        EventType.Add("ShouldRender was called");
+        return base.ShouldRender();
+    }
+
+    private void StartCountDown()
+    {
+        var timer = new Timer(TimerCallBack, null, 1000, 1000);
+    }
+
+    private void TimerCallBack(object state)
+    {
+        if(Count > 0)
+        {
+            Count--;
+            InvokeAsync(StateHasChanged);
+        }
+    }
+}
