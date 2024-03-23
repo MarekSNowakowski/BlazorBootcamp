@@ -9,6 +9,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorBootcampWeb_Client", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorBootcamp_Models", "BlazorBootcamp_Models\BlazorBootcamp_Models.csproj", "{17FF1214-12D4-48D6-A697-B538EC4747D4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorBootcamp_Business", "BlazorBootcamp_Business\BlazorBootcamp_Business.csproj", "{9AA64797-AE38-41E4-9948-34EF75D8531F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorBootcamp_Common", "BlazorBootcamp_Common\BlazorBootcamp_Common.csproj", "{1593587E-C83D-420E-9DE2-E14BE871888E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorBootcamp_DataAccess", "BlazorBootcamp_DataAccess\BlazorBootcamp_DataAccess.csproj", "{D4BD00BF-6C45-4BED-BA3C-1D3584CB7C2B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +33,18 @@ Global
 		{17FF1214-12D4-48D6-A697-B538EC4747D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17FF1214-12D4-48D6-A697-B538EC4747D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17FF1214-12D4-48D6-A697-B538EC4747D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AA64797-AE38-41E4-9948-34EF75D8531F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AA64797-AE38-41E4-9948-34EF75D8531F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AA64797-AE38-41E4-9948-34EF75D8531F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AA64797-AE38-41E4-9948-34EF75D8531F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1593587E-C83D-420E-9DE2-E14BE871888E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1593587E-C83D-420E-9DE2-E14BE871888E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1593587E-C83D-420E-9DE2-E14BE871888E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1593587E-C83D-420E-9DE2-E14BE871888E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4BD00BF-6C45-4BED-BA3C-1D3584CB7C2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4BD00BF-6C45-4BED-BA3C-1D3584CB7C2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4BD00BF-6C45-4BED-BA3C-1D3584CB7C2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4BD00BF-6C45-4BED-BA3C-1D3584CB7C2B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
