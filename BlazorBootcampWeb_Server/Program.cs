@@ -2,6 +2,8 @@ using BlazorBootcamp_Business.Repository;
 using BlazorBootcamp_Business.Repository.IRepository;
 using BlazorBootcamp_DataAccess.Data;
 using BlazorBootcampWeb_Server.Data;
+using BlazorBootcampWeb_Server.Service;
+using BlazorBootcampWeb_Server.Service.IService;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +15,8 @@ builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddDbContext<ApplicationDbContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepositrory>();
+builder.Services.AddScoped<IFileUpload, FileUpload>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();

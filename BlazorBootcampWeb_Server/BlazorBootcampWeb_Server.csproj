@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -20,6 +20,10 @@
     <ProjectReference Include="..\BlazorBootcamp_Business\BlazorBootcamp_Business.csproj" />
     <ProjectReference Include="..\BlazorBootcamp_DataAccess\BlazorBootcamp_DataAccess.csproj" />
     <ProjectReference Include="..\BlazorBootcamp_Models\BlazorBootcamp_Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\images\product\" />
   </ItemGroup>
 
 </Project>
