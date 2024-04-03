@@ -6,6 +6,7 @@
 @inject IFileUpload _fileUpload
 @inject IJSRuntime _jsRuntime
 
+
 <div class="row my-2">
     <h3 class="card-title text-primary mb-3 ml-3">@Title Category</h3>
 
@@ -34,7 +35,7 @@
                 </div>
                 <div class="form-group">
                     <label>Description</label>
-                    <InputTextArea type="text" @bind-Value="Product.Description" class="form-control" />
+                    <SfRichTextEditor @bind-Value="Product.Description"/>
                     <ValidationMessage For="()=>Product.Description" />
                 </div>
                 <div class="row pt-3">

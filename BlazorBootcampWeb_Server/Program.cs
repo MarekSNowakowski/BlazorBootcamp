@@ -5,11 +5,16 @@ using BlazorBootcampWeb_Server.Data;
 using BlazorBootcampWeb_Server.Service;
 using BlazorBootcampWeb_Server.Service.IService;
 using Microsoft.EntityFrameworkCore;
+using Syncfusion.Blazor;
+
+
+Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NBaF5cXmZCekx3RXxbf1x0ZFZMYVhbRHJPIiBoS35RckVnWXxfdXVRRmRZVEVz");
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddSyncfusionBlazor();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddDbContext<ApplicationDbContext>(options => 
