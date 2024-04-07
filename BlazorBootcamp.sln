@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorBootcamp_Common", "Bl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorBootcamp_DataAccess", "BlazorBootcamp_DataAccess\BlazorBootcamp_DataAccess.csproj", "{D4BD00BF-6C45-4BED-BA3C-1D3584CB7C2B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorBootcampWeb_API", "BlazorBootcampWeb_API\BlazorBootcampWeb_API.csproj", "{DAF87211-FD9E-4624-A4F1-4C60F08A8F66}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{D4BD00BF-6C45-4BED-BA3C-1D3584CB7C2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4BD00BF-6C45-4BED-BA3C-1D3584CB7C2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4BD00BF-6C45-4BED-BA3C-1D3584CB7C2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DAF87211-FD9E-4624-A4F1-4C60F08A8F66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAF87211-FD9E-4624-A4F1-4C60F08A8F66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAF87211-FD9E-4624-A4F1-4C60F08A8F66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAF87211-FD9E-4624-A4F1-4C60F08A8F66}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

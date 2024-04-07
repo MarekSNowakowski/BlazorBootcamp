@@ -40,12 +40,12 @@ namespace BlazorBootcamp_Business.Repository
 
         public async Task<IEnumerable<ProductDTO>> GetAll()
         {
-            return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDTO>>(_db.Products.Include(u => u.Category));
+            return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDTO>>(_db.Products.Include(u => u.Category).Include(u => u.ProductPrices));
         }
 
         public async Task<ProductDTO> GetById(int id)
         {
-            var obj = await _db.Products.Include(u=>u.Category).FirstOrDefaultAsync(c => c.Id == id);
+            var obj = await _db.Products.Include(u=>u.Category).Include(u=>u.ProductPrices).FirstOrDefaultAsync(c => c.Id == id);
             if (obj != null)
             {
                 return _mapper.Map<Product, ProductDTO>(obj);
