@@ -19,6 +19,11 @@ builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepositrory>();
 builder.Services.AddScoped<IProductPriceRepository, ProductPriceRepositrory>();
 
+builder.Services.AddCors(o => o.AddPolicy("BlazorBootcamp", builder =>
+{
+    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+}));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -29,6 +34,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("BlazorBootcamp");
 app.UseRouting();
 
 app.UseAuthorization();
