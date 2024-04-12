@@ -1,6 +1,9 @@
 ﻿@page "/details/{ProductId:int}"
 @inject IProductService _productService
-@using BlazorBootcampWeb_Client.ViewModels;
+@inject ICartService _cartService
+@inject NavigationManager _navigationManager
+@inject IJSRuntime _jsRuntime
+@using BlazorBootcampWeb_Client.ViewModels
 
 @if (IsProcessing)
 {
@@ -11,7 +14,7 @@
 else
 {
     <EditForm OnValidSubmit="AddToCart" Model="DetailsVM" method="post">
-        <DataAnnotationsValidator/>
+        <DataAnnotationsValidator />
         <div class="card container mt-4">
             <div class="card-header ml-0  row">
                 <div class="col-12 col-md-6">
@@ -31,7 +34,7 @@ else
                             <div class="row">
                                 @foreach (var productPrice in Product.ProductPrices)
                                 {
-                                    @if(productPrice.Id == DetailsVM.SelectedProductPriceId)
+                                    @if (productPrice.Id == DetailsVM.SelectedProductPriceId)
                                     {
                                         // product selected by user
                                         <div class="col-2 bg-light text-center pt-2 m-2" style="border:3px solid #28A745; border-radius:10px;box-shadow:5px">
@@ -43,15 +46,15 @@ else
                                     {
                                         // all other products
                                         <div class="col-2 bg-light text-center pt-2 m-2" style="border:3px solid; border-radius:10px;box-shadow:5px"
-                                        @onclick="(args)=>SelectedProductPrice(args,productPrice.Id)">
+                                             @onclick="(args)=>SelectedProductPrice(args,productPrice.Id)">
                                             <p>@productPrice.Size</p>
                                             <p>@productPrice.Price.ToString("c")</p>
                                         </div>
                                     }
 
                                 }
-                                
-                                @if(!Product.ProductPrices.Any())
+
+                                @if (!Product.ProductPrices.Any())
                                 {
                                     <p class="text-warning"> No Size available yet...</p>
                                 }
@@ -61,16 +64,15 @@ else
                                         <div class="col-2 text-primary"><h4>Count</h4></div>
                                         <div class="col-10">
                                             <InputNumber @bind-Value="DetailsVM.Count" class="form-control" />
-                                            <ValidationMessage For="()=>DetailsVM.Count"/>
+                                            <ValidationMessage For="()=>DetailsVM.Count" />
                                         </div>
                                     </div>
                                 }
 
                             </div>
-                            <div class="col-2">
-                                <img src="@Product.ImageUrl" width="100%" class="rounded" />
-                            </div>
-
+                        </div>
+                        <div class="col-2">
+                            <img src="@Product.ImageUrl" width="100%" class="rounded" />
                         </div>
 
                     </div>
@@ -81,9 +83,9 @@ else
                             <a class="btn btn-success form-control " href="/">Back to Home</a>
                         </div>
                         <div class="col-12 col-md-6 pb-1">
-                            @if(DetailsVM.SelectedProductPriceId>0)
+                            @if (DetailsVM.SelectedProductPriceId > 0)
                             {
-                                // item has been selected
+                            // item has been selected
                                 <button type="submit" value="Add to Cart" class="btn btn-primary form-control">Add to Cart</button>
                             }
                             else
@@ -122,6 +124,15 @@ else
 
     private async Task AddToCart()
     {
-        
+        ShoppingCart shoppingCart = new()
+        {
+            Count = DetailsVM.Count,
+            ProductId = ProductId,
+            ProductPriceId = DetailsVM.SelectedProductPriceId
+        };
+
+        await _cartService.IncrementCart(shoppingCart);
+        _navigationManager.NavigateTo("/");
+        await _jsRuntime.ToastrSuccess("Product added to cart succesfully");
     }
 }
