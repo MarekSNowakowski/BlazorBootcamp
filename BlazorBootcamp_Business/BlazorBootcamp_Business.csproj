@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BlazorBootcamp_Common\BlazorBootcamp_Common.csproj" />
     <ProjectReference Include="..\BlazorBootcamp_DataAccess\BlazorBootcamp_DataAccess.csproj" />
     <ProjectReference Include="..\BlazorBootcamp_Models\BlazorBootcamp_Models.csproj" />
   </ItemGroup>
