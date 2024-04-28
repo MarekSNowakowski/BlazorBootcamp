@@ -2,6 +2,7 @@
 @inject IProductRepository _productRepository
 @inject IJSRuntime _jsRuntime
 @inject IFileUpload _fileUpload
+@attribute [Authorize]
 
 <_DeleteConfirmation IsParentComponentProcessing="IsLoading" ConfirmDelete_Click="ConfirmDelete_Click" />
 <div class="row mt-4"> 

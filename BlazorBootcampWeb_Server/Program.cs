@@ -4,8 +4,10 @@ using BlazorBootcamp_DataAccess.Data;
 using BlazorBootcampWeb_Server.Data;
 using BlazorBootcampWeb_Server.Service;
 using BlazorBootcampWeb_Server.Service.IService;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Syncfusion.Blazor;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 
 Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NBaF5cXmZCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWXtednRSRmJZUkB3WEU=");
@@ -19,6 +21,8 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddDbContext<ApplicationDbContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDefaultIdentity<IdentityUser>()
+    .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepositrory>();
 builder.Services.AddScoped<IProductPriceRepository, ProductPriceRepositrory>();
@@ -44,7 +48,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 

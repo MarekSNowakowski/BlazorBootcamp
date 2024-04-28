@@ -7,13 +7,23 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="12.0.1" />
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.28">
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.16" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.29">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.28" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.29" />
+
+	  <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.29" />
+	  
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.29">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
+	  <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
+
+	  <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
     <PackageReference Include="Syncfusion.Blazor.Grid" Version="25.1.38" />
     <PackageReference Include="Syncfusion.Blazor.RichTextEditor" Version="25.1.38" />
     <PackageReference Include="Syncfusion.Blazor.Themes" Version="25.1.38" />
@@ -24,6 +34,7 @@
     <ProjectReference Include="..\BlazorBootcamp_DataAccess\BlazorBootcamp_DataAccess.csproj" />
     <ProjectReference Include="..\BlazorBootcamp_Models\BlazorBootcamp_Models.csproj" />
   </ItemGroup>
+	
 
   <ItemGroup>
     <Folder Include="wwwroot\images\product\" />
