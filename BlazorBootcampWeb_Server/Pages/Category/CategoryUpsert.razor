@@ -1,5 +1,6 @@
 ﻿@page "/category/create"
 @page "/category/edit/{id:int}"
+@using BlazorBootcamp_Common
 @inject ICategoryRepository _categoryRepository
 @inject NavigationManager _navigationManager
 @attribute [Authorize(Roles = SD.Role_Admin)]
