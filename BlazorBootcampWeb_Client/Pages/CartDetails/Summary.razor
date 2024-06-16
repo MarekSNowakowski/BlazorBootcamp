@@ -2,7 +2,8 @@
 @inject IJSRuntime _jsRuntime;
 @inject ILocalStorageService _localStorage
 @inject IProductService _productService
-
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
 
 @if (IsProcessing)
 {
@@ -23,7 +24,7 @@ else
                     </div>
                 </div>
 
-                @foreach(var prod in Order.Details)
+                @foreach (var prod in Order.Details)
                 {
                     <div class="row border p-1 m-1">
 
@@ -103,7 +104,6 @@ else
         </div>
     </div>
 }
-}
 
 @code {
     public bool IsProcessing { get; set; } = false;
@@ -141,6 +141,15 @@ else
                 };
             Order.Details.Add(orderDetailDTO);
             Order.Header.OrderTotal += (item.Count * productPrice.Price);
+        }
+
+        if(await _localStorage.GetItemAsync<UserDTO>(SD.Local_UserDetails) != null) 
+        {
+            var userInfo = await _localStorage.GetItemAsync<UserDTO>(SD.Local_UserDetails);
+            Order.Header.UserId = userInfo.Id;
+            Order.Header.Name = userInfo.Name;
+            Order.Header.Email = userInfo.Email;
+            Order.Header.PhoneNumber = userInfo.PhoneNumber;
         }
 
         IsProcessing = false;
