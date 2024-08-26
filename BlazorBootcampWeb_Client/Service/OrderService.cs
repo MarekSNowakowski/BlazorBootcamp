@@ -1,6 +1,7 @@
 ﻿using BlazorBootcamp_Models;
 using BlazorBootcampWeb_Client.Service.IService;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace BlazorBootcampWeb_Client.Service
 {
@@ -15,6 +16,21 @@ namespace BlazorBootcampWeb_Client.Service
             _httpClient = httpClient;
             _configuration = configuration;
             BaseServerUrl = _configuration.GetSection("BaseServerUrl").Value;
+        }
+
+        public async Task<OrderDTO> Create(StripePaymentDTO paymentDTO)
+        {
+            var content = JsonConvert.SerializeObject(paymentDTO);
+            var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync("api/order/create", bodyContent);
+            var responseResult = response.Content.ReadAsStringAsync().Result;
+
+            if(response.IsSuccessStatusCode)
+            {
+                var result = JsonConvert.DeserializeObject<OrderDTO>(responseResult);
+                return result;
+            }
+            return new OrderDTO();
         }
 
         public async Task<OrderDTO> Get(int orderHeaderId)
@@ -46,6 +62,22 @@ namespace BlazorBootcampWeb_Client.Service
             }
 
             return new List<OrderDTO>();
+        }
+
+        public async Task<OrderHeaderDTO> MarkPaymentSuccesful(OrderHeaderDTO orderHeaderDTO)
+        {
+            var content = JsonConvert.SerializeObject(orderHeaderDTO);
+            var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync("api/order/paymentsuccessful", bodyContent);
+            var responseResult = response.Content.ReadAsStringAsync().Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                var result = JsonConvert.DeserializeObject<OrderHeaderDTO>(responseResult);
+                return result;
+            }
+            var errorModel = JsonConvert.DeserializeObject<ErrorModelDTO> (responseResult);
+            throw new Exception(errorModel.ErrorMessage);
         }
     }
 }

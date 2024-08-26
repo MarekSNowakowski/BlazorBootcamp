@@ -39,5 +39,9 @@ namespace BlazorBootcamp_DataAccess
         public string PostalCode { get; set; }
         [Required]
         public string Email { get; set; }
+
+        // Carrier
+        public string? Tracking { get; set; }
+        public string? Carrier { get; set; }
     }
 }

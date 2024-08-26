@@ -2,6 +2,8 @@
 @inject IJSRuntime _jsRuntime;
 @inject ILocalStorageService _localStorage
 @inject IProductService _productService
+@inject IPaymentService _paymentService
+@inject IOrderService _orderService
 @using Microsoft.AspNetCore.Authorization
 @attribute [Authorize]
 
@@ -133,6 +135,7 @@ else
 
             OrderDetailDTO orderDetailDTO = new()
                 {
+                    ProductName = product.Name,
                     ProductId = item.ProductId,
                     Size = productPrice.Size,
                     Count = item.Count,
@@ -157,6 +160,28 @@ else
 
     private async Task HandleCheckout()
     {
-        
+        try
+        {
+            IsProcessing = true;
+
+            var paymentDto = new StripePaymentDTO()
+                {
+                    Order = Order
+                };
+
+            var result = await _paymentService.Checkout(paymentDto);
+
+            Order.Header.SessionId = result.Data.ToString();
+
+            var orderDTOSaved = await _orderService.Create(paymentDto);
+
+            await _localStorage.SetItemAsync(SD.Local_OrderDetails, orderDTOSaved);
+
+            await _jsRuntime.InvokeVoidAsync("redirectToCheckout", result.Data.ToString());
+        }
+        catch(Exception e)
+        {
+            await _jsRuntime.ToastrError(e.Message);
+        }
     }
 }

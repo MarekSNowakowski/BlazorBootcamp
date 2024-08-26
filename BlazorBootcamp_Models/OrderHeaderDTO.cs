@@ -44,5 +44,9 @@ namespace BlazorBootcamp_Models
         [Required]
         [Display(Name = "Email")]
         public string Email { get; set; }
+
+        // Carrier
+        public string? Tracking { get; set; }
+        public string? Carrier { get; set; }
     }
 }

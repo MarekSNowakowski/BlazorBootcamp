@@ -1,0 +1,239 @@
+﻿@page "/order/details/{Id:int}"
+@using BlazorBootcamp_Common
+@inject IOrderRepository _orderRepository
+@inject IJSRuntime _jsRuntime
+@attribute [Authorize(Roles = SD.Role_Admin)]
+
+@if(IsLoading) {
+    <div class="text-center">
+        <div class="text-center">
+            <img src="/images/loading.gif" />
+        </div>
+    </div>
+}
+else
+{
+    <div class="container">
+        <div class="card">
+            <div class="card-header bg-dark text-light ml-0">
+                <div class="container row">
+                    <div class="col-12 d-none d-md-block col-md-6 pb-1">
+                        <i class="fas fa-shopping-cart"></i> &nbsp; Order Summary
+                    </div>
+                    <div class="col-12 col-md-4 offset-md-2 text-right">
+                        <a href="/orderList" class="btn btn-outline-info form-control btn-sm">Back to Orders</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="container rounded p-2">
+                    <div class="row">
+                        <div class="col-12 col-lg-6 pb-4">
+                            <EditForm Model="Order" OnValidSubmit="UpdateOrder">
+                                <DataAnnotationsValidator/>
+                                <div class="row">
+                                    <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="text-primary">Customer Details:</span>
+                                    </h4>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-3">Name</div>
+                                    <div class="col-9">
+                                        <InputText @bind-Value="Order.Header.Name" class="form-control" />
+                                        <ValidationMessage For="()=>Order.Header.Name"/>
+                                    </div>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-3">Phone</div>
+                                    <div class="col-9">
+                                        <InputText @bind-Value="Order.Header.PhoneNumber" class="form-control" />
+                                        <ValidationMessage For="()=>Order.Header.PhoneNumber" />
+                                    </div>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-3">Address</div>
+                                    <div class="col-9">
+                                        <InputText @bind-Value="Order.Header.StreetAddress" class="form-control" />
+                                        <ValidationMessage For="()=>Order.Header.StreetAddress" />
+                                    </div>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-3">City</div>
+                                    <div class="col-9">
+                                        <InputText @bind-Value="Order.Header.City" class="form-control" />
+                                        <ValidationMessage For="()=>Order.Header.City" />
+                                    </div>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-3">Province</div>
+                                    <div class="col-9">
+                                        <InputText @bind-Value="Order.Header.Province" class="form-control" />
+                                        <ValidationMessage For="()=>Order.Header.Province" />
+                                    </div>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-3">Zip Code</div>
+                                    <div class="col-9">
+                                        <InputText @bind-Value="Order.Header.PostalCode" class="form-control" />
+                                        <ValidationMessage For="()=>Order.Header.PostalCode" />
+                                    </div>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-3">Email</div>
+                                    <div class="col-9">
+                                        <input type="text" readonly value="@Order.Header.Email" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-3">Order Date</div>
+                                    <div class="col-9">
+                                        <input type="text" readonly value="@Order.Header.OrderDate.ToShortDateString()" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-3">Carrier</div>
+                                    <div class="col-9">
+                                        <InputText @bind-Value="Order.Header.Carrier" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-3">Tracking</div>
+                                    <div class="col-9">
+                                        <InputText @bind-Value="Order.Header.Tracking" class="form-control" />
+                                    </div>
+                                </div>
+                                @if(Order.Header.Status is not SD.Status_Confirmed or SD.Status_Pending)
+                                {
+                                    <div class="row my-1">
+                                        <div class="col-3">Shipping Date</div>
+                                        <div class="col-9">
+                                            <input type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                }
+                                <div class="row my-1">
+                                    <div class="col-3">Session ID</div>
+                                    <div class="col-9">
+                                        <input type="text" readonly value="@Order.Header.SessionId" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-3">Order Status</div>
+                                    <div class="col-9">
+                                        <input readonly value="@Order.Header.Status" type="text" class="form-control" />
+                                    </div>
+                                </div>
+                                @if(Order.Header.Status == SD.Status_Confirmed)
+                                {
+                                    <input type="submit" class="btn btn-warning form-control my-1" value="Update Order Details" />
+                                }
+                            </EditForm>
+                        </div>
+                        <div class="col-12 col-lg-5 offset-lg-1">
+                            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="text-primary">Order Summary</span>
+                            </h4>
+                            <ul class="list-group mb-3">
+                                @foreach(var detail in Order.Details)
+                                {
+                                    <li class="list-group-item d-flex justify-content-between p-2">
+                                        <div class="row container">
+                                            <div class="col-8">
+                                                <h6 class="my-0 text-primary">@detail.ProductName</h6>
+                                                <small class="text-muted">Price : @detail.Price.ToString("c")</small><br />
+                                                <small class="text-muted">Quantity : @detail.Count</small>
+                                            </div>
+                                            <div class="col-4 text-end">
+                                                <p class="text-success">@((detail.Count * detail.Price).ToString("c"))</p>
+                                            </div>
+                                        </div>
+                                    </li>                                    
+                                }
+                                <li class="list-group-item bg-info">
+                                    <div class="row container">
+                                        <div class="col-6">
+                                            <h5 class="text-white">TOTAL </h5>
+                                        </div>
+                                        <div class="col-6 text-end">
+                                            <h5 class="text-white">@Order.Header.OrderTotal.ToString("c")</h5>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+
+                            @if(Order.Header.Status == SD.Status_Confirmed)
+                            {
+                                <button @onclick="ShipOrder" class="btn btn-success form-control my-1">Ship Order</button>
+                            }
+
+                            @if(Order.Header.Status is SD.Status_Confirmed or SD.Status_Pending)
+                            {
+                                <button @onclick="CancelOrder" class="btn btn-danger form-control my-1">Cancel Order</button>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; } = 0;
+    public bool IsLoading { get; set; } = true;
+    public OrderDTO Order { get; set; } = new();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadOrder();
+        }
+    }
+
+    private async Task LoadOrder()
+    {
+        IsLoading = true;
+        StateHasChanged();
+        Order = await _orderRepository.GetById(Id);
+        IsLoading = false;
+        StateHasChanged();
+    }
+
+    private async Task UpdateOrder()
+    {
+        var orderHeaderDTO = await _orderRepository.UpdateHeader(Order.Header);
+        Order.Header = orderHeaderDTO;
+        await _jsRuntime.ToastrSuccess("Order has been updated successfully");
+    }
+
+    private async Task ShipOrder()
+    {
+        if(string.IsNullOrEmpty(Order.Header.Carrier) || string.IsNullOrEmpty(Order.Header.Tracking))
+        {
+            await _jsRuntime.ToastrError("Please enter tracking and carrier information");
+            return;
+        }
+
+        Order.Header.Status = SD.Status_Shipped;
+        var orderHeaderDTO = await _orderRepository.UpdateHeader(Order.Header);
+        Order.Header = orderHeaderDTO;
+        await _jsRuntime.ToastrSuccess("Order has been shipped");
+    }
+
+    private async Task CancelOrder()
+    {
+        Order.Header = await _orderRepository.CancelOrder(Order.Header.Id);
+
+        if(Order.Header.Status == SD.Status_Cancelled)
+        {
+            await _jsRuntime.ToastrSuccess("Order has been cancelled successfully");
+        }
+        if (Order.Header.Status == SD.Status_Refunded)
+        {
+            await _jsRuntime.ToastrSuccess("Order has been cancelled and refunded successfully");
+        }
+    }
+}

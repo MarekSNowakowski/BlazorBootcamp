@@ -6,6 +6,7 @@ using BlazorBootcamp_DataAccess.Data;
 using BlazorBootcamp_DataAccess.ViewModel;
 using BlazorBootcamp_Models;
 using Microsoft.EntityFrameworkCore;
+using Stripe;
 
 namespace BlazorBootcamp_Business.Repository
 {
@@ -18,6 +19,38 @@ namespace BlazorBootcamp_Business.Repository
         {
             _db = db;
             _mapper = mapper;
+        }
+
+        public async Task<OrderHeaderDTO> CancelOrder(int id)
+        {
+            var orderHeader = await _db.OrderHeaders.FindAsync(id);
+            if (orderHeader == null)
+            {
+                return new OrderHeaderDTO();
+            }
+
+            if(orderHeader.Status == SD.Status_Pending)
+            {
+                orderHeader.Status = SD.Status_Cancelled;
+                await _db.SaveChangesAsync();
+            }
+            if(orderHeader.Status == SD.Status_Confirmed)
+            {
+                //refund
+                var options = new RefundCreateOptions
+                {
+                    Reason = RefundReasons.RequestedByCustomer,
+                    PaymentIntent = orderHeader.PaymentIntentId
+                };
+
+                var service = new RefundService();
+                Refund refund = service.Create(options);
+
+                orderHeader.Status = SD.Status_Refunded;
+                await _db.SaveChangesAsync();
+            }
+
+            return _mapper.Map<OrderHeader, OrderHeaderDTO>(orderHeader);
         }
 
         public async Task<OrderDTO> Create(OrderDTO orderDTO)
@@ -99,7 +132,7 @@ namespace BlazorBootcamp_Business.Repository
             return new OrderDTO();
         }
 
-        public async Task<OrderHeaderDTO> MarkPaymentSuccesful(int id)
+        public async Task<OrderHeaderDTO> MarkPaymentSuccessful(int id, string paymentIntentId)
         {
             var data = await _db.OrderHeaders.FindAsync(id);
             if(data == null)
@@ -108,6 +141,7 @@ namespace BlazorBootcamp_Business.Repository
             }
             if(data.Status == SD.Status_Pending)
             {
+                data.PaymentIntentId = paymentIntentId;
                 data.Status = SD.Status_Confirmed;
                 await _db.SaveChangesAsync();
                 return _mapper.Map<OrderHeader, OrderHeaderDTO>(data);
@@ -120,10 +154,20 @@ namespace BlazorBootcamp_Business.Repository
         {
             if(orderHeaderDTO != null)
             {
-                var OrderHeader = _mapper.Map<OrderHeaderDTO, OrderHeader>(orderHeaderDTO);
-                _db.OrderHeaders.Update(OrderHeader);
+                var orderHeaderFromDb = _db.OrderHeaders.FirstOrDefault(x => x.Id == orderHeaderDTO.Id);
+
+                orderHeaderFromDb.Name = orderHeaderDTO.Name;
+                orderHeaderFromDb.PhoneNumber = orderHeaderDTO.PhoneNumber;
+                orderHeaderFromDb.Carrier = orderHeaderDTO.Carrier;
+                orderHeaderFromDb.Tracking = orderHeaderDTO.Tracking;
+                orderHeaderFromDb.StreetAddress = orderHeaderDTO.StreetAddress;
+                orderHeaderFromDb.City = orderHeaderDTO.City;
+                orderHeaderFromDb.Province = orderHeaderDTO.Province;
+                orderHeaderFromDb.PostalCode = orderHeaderDTO.PostalCode;
+                orderHeaderFromDb.Status = orderHeaderDTO.Status;
+
                 await _db.SaveChangesAsync();
-                return _mapper.Map<OrderHeader, OrderHeaderDTO>(OrderHeader);
+                return _mapper.Map<OrderHeader, OrderHeaderDTO>(orderHeaderFromDb);
             }
             return new OrderHeaderDTO();
         }
